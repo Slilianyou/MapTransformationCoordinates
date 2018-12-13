@@ -1,2 +1,9 @@
 # MapTransformationCoordinates
 地图坐标转换
+在开发项目中，经常遇到百度地图坐标转换问题。目前关于坐标系统分为以下几种：地球坐标(WGS84编码)、火星坐标(GCJ-02编码)、百度坐标(BD-09)。在获取经纬度后然后绘制在地图上，由于每个地图所使用坐标系统不同，就需要以转换坐标的方式，格式化成符合当前地图的坐标编码。下面解释一下已上的坐标系统的含义。
+地球坐标 (WGS84)                                                                                                                 国际标准，GPS标准从 GPS 设备中取出的原始数据是就是这个                                                                                 国际地图提供商一般使用的也是这个
+火星坐标 (GCJ-02)                                                                                                                中国标准，行货 GPS 设备取出的最终数据是这个                                                                                          国家规定： 国内出版的各种地图系统（包括电子形式），必须至少采用GCJ-02对地理位置进行首次加密。
+百度坐标 (BD-09)                                                                                                               百度标准，百度 SDK，地图，Geocoding 用的都是这个。
+ //火星坐标转百度坐标                                                                                                                   CLLocationCoordinate2D test = CLLocationCoordinate2DMake([info.latitudeString floatValue], [info.longitudeString floatValue]);//将获取的经纬度转为CLLocationCoordinate2D类                                                                           //坐标转换                                                                                                                           NSDictionary* testdic = BMKConvertBaiduCoorFrom(test,BMK_COORDTYPE_COMMON);//调用百度提供的API BMKConvertBaiduCoorFrom()函数，转换坐标                                                                                                                                CLLocationCoordinate2D lo = BMKCoorDictionaryDecode(testdic);//对转换后获得的经过base64加密之后的x，y坐标字典进行解密              CLLocation *cll = [[[CLLocation alloc]initWithLatitude:lo.latitude longitude:lo.longitude] locationMarsFromEarth];
+地球坐标: CLLocationManager
+火星坐标（iOS mapView 高德 ， 国内google ,搜搜、阿里云 都是火星坐标
